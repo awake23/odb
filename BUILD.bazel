@@ -1,0 +1,16 @@
+# Version headers are pregenerated with build2 0.18.1 for ODB 2.6.0.
+# When upgrading ODB, regenerate them in a clean upstream checkout and copy back:
+# b 'libodb/odb/hxx{version}' 'libodb-sqlite/odb/sqlite/hxx{version}' config.import.libodb=libodb/
+# Keep both version.hxx files and MODULE.bazel in sync with the upstream release.
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "libodb",
+    actual = "//libodb:libodb",
+)
+
+alias(
+    name = "sqlite",
+    actual = "//libodb-sqlite:sqlite",
+)

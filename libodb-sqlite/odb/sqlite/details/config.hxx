@@ -20,11 +20,15 @@
 #  error SQLite version 3.7.4 or later required
 #endif
 
-#ifndef ODB_THREADS_NONE
+// The SQLite dependency must declare its enabled compile-time features.
+//
+#if !defined(ODB_THREADS_NONE) && defined(SQLITE_ENABLE_UNLOCK_NOTIFY)
 #  define LIBODB_SQLITE_HAVE_UNLOCK_NOTIFY 1
 #endif
 
-#define LIBODB_SQLITE_HAVE_COLUMN_METADATA 1
+#ifdef SQLITE_ENABLE_COLUMN_METADATA
+#  define LIBODB_SQLITE_HAVE_COLUMN_METADATA 1
+#endif
 
 // no post
 

@@ -1,0 +1,50 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
+label_flag(
+    name = "sqlite3",
+    build_setting_default = ":system-sqlite3",
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "system-sqlite3",
+    defines = ["SQLITE_ENABLE_COLUMN_METADATA"],
+    linkopts = ["-lsqlite3"],
+)
+
+cc_library(
+    name = "options",
+    srcs = ["odb/sqlite/details/pregenerated/odb/sqlite/details/options.cxx"],
+    hdrs = [
+        "odb/sqlite/details/pregenerated/odb/sqlite/details/options.hxx",
+        "odb/sqlite/details/pregenerated/odb/sqlite/details/options.ixx",
+    ],
+    strip_include_prefix = "odb/sqlite/details/pregenerated",
+)
+
+cc_library(
+    name = "sqlite",
+    srcs = glob(
+        include = ["odb/sqlite/*.cxx"],
+        exclude = ["odb/sqlite/details/pregenerated/**"]
+    ),
+    hdrs = glob(
+        include = [
+            "odb/sqlite/**/*.hxx",
+            "odb/sqlite/**/*.ixx",
+            "odb/sqlite/**/*.txx",
+        ],
+        exclude = [
+            "odb/sqlite/details/pregenerated/**"
+        ],
+    ),
+    deps = [
+        ":options",
+        ":sqlite3",
+        "//libodb:libodb",
+    ],
+    defines = ["LIBODB_SQLITE_STATIC"],
+    local_defines = ["LIBODB_SQLITE_STATIC_BUILD"],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
