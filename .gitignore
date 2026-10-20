@@ -3,3 +3,8 @@
 # Local default options files.
 #
 .build2/local/
+
+# Bazel output symlinks and lock file (only the root module's lock file matters).
+#
+/bazel-*
+MODULE.bazel.lock
